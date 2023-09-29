@@ -1,5 +1,6 @@
 const { Router } = require("express")
 const ProductManager = require("../ProductManager")
+const { socketConnection } = require("../socket")
 
 const router = Router()
 
@@ -51,10 +52,15 @@ router.post("/", async (req, res) => {
             thumbnails
         })
 
+        if (socketConnection) {
+
+            socketConnection.emit("nuevo_producto", newProduct)
+        }
+
         res.json(newProduct);
 
     } catch (error) {
-        res.json({
+        res.status(400).json({
             error
         })
     }
@@ -90,6 +96,10 @@ router.delete("/:pid", async (req, res) => {
 
         if (producto) {
             await Inventario.deleteProduct(producto.id)
+
+            if (socketConnection) {
+                socketConnection.emit("producto_eliminado", producto.id)
+            }
             return res.json(producto)
         } else {
             throw `Producto con id ${req.params.pid} no encontrado`

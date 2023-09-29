@@ -1,0 +1,17 @@
+<div>
+    <h1>
+
+        Bienvenido al realtime {{ name }} !
+    </h1>
+
+    <div>
+        <label for="nombre">Nombre nuevo producto:</label>
+        <input type="text" id="nombre" name="nombre">
+        <button id="boton_crear">Crear producto</button>
+
+    </div>
+    <ul id="productos_lista"></ul>
+
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
