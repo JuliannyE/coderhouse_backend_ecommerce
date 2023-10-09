@@ -11,9 +11,9 @@ const cargarProductos = () => {
     listaProductos.innerHTML = productos.map(producto => `
         <li>
             <span>
-                ${producto.title} -- id:${producto.id}
+                ${producto.title} -- id:${producto._id}
             </span> 
-            <button style="color:red" onClick=eliminarProducto(${producto.id})>eliminar</button>
+            <button style="color:red" onClick=eliminarProducto('${producto._id}')>eliminar</button>
         </li>
     `).join("")
 }
@@ -76,6 +76,6 @@ socket.on("nuevo_producto", data => {
 })
 
 socket.on("producto_eliminado", data => {
-    productos = productos.filter(producto => producto.id != data)
+    productos = productos.filter(producto => producto._id != data)
     cargarProductos()
 })

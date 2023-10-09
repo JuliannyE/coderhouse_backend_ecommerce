@@ -1,16 +1,14 @@
 const { Router } = require("express")
-const ProductManager = require("../ProductManager")
+const ProductModel = require("../dao/models/products.model")
 
 const router = Router()
-const Inventario = new ProductManager("./src/productos.json")
 
 router.get("/", async (req, res) => {
     let testUser = {
         name: "julianny"
     }
 
-    const products = await Inventario.getProducts()
-
+    const products = await ProductModel.find().lean()
     res.render("home", {
         name: testUser.name,
         products
@@ -20,6 +18,13 @@ router.get("/", async (req, res) => {
 router.get("/realtimeproducts", async (req, res) => {
 
     res.render("realtimeProducts", {
+        name: "Julianny "
+    })
+})
+
+router.get("/chat", async (req, res) => {
+
+    res.render("chat", {
         name: "Julianny "
     })
 })
