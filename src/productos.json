@@ -1,1 +1,110 @@
-[{"id":1,"title":"Pantalon","description":"Manga larga","price":120,"status":true,"thumbnails":["pantalon.png"],"code":"abc1234","stock":10,"category":"pantalon"},{"id":2,"title":"Camisa manga corta","description":"Manga corta","price":80,"status":true,"thumbnails":["camisa.png"],"code":"def5678","stock":15,"category":"camisas"},{"id":3,"title":"Zapatos casuales","description":"Estilo casual","price":150,"status":true,"thumbnails":["zapatos.png"],"code":"ghi9012","stock":8,"category":"zapatos"}]
+[
+  {
+    "title": "Camisa de Manga Corta",
+    "description": "Camisa de algodón con diseño a rayas",
+    "price": 25,
+    "status": true,
+    "thumbnails": ["camisa.png"],
+    "code": "abc12345",
+    "stock": 12,
+    "category": "camisas"
+  },
+
+  {
+    "title": "Jeans Ajustados",
+    "description": "Jeans de denim con corte moderno",
+    "price": 45,
+    "status": true,
+    "thumbnails": ["jeans.png"],
+    "code": "def5678",
+    "stock": 20,
+    "category": "pantalones"
+  },
+
+  {
+    "title": "Vestido de Noche",
+    "description": "Vestido elegante para ocasiones especiales",
+    "price": 70,
+    "status": true,
+    "thumbnails": ["vestido.png"],
+    "code": "ghi9012",
+    "stock": 5,
+    "category": "vestidos"
+  },
+
+  {
+    "title": "Sombrero de Paja",
+    "description": "Sombrero de ala ancha perfecto para la playa",
+    "price": 20,
+    "status": true,
+    "thumbnails": ["sombrero.png"],
+    "code": "jkl3456",
+    "stock": 15,
+    "category": "accesorios"
+  },
+
+  {
+    "title": "Chaqueta de Cuero",
+    "description": "Chaqueta de cuero genuino para un look audaz",
+    "price": 90,
+    "status": true,
+    "thumbnails": ["chaqueta.png"],
+    "code": "mno7890",
+    "stock": 8,
+    "category": "chaquetas"
+  },
+
+  {
+    "title": "Bufanda de Lana",
+    "description": "Bufanda suave y abrigada para el invierno",
+    "price": 15,
+    "status": true,
+    "thumbnails": ["bufanda.png"],
+    "code": "pqr1234",
+    "stock": 25,
+    "category": "accesorios"
+  },
+
+  {
+    "title": "Calcetines Deportivos",
+    "description": "Pack de 3 pares de calcetines deportivos",
+    "price": 12,
+    "status": true,
+    "thumbnails": ["calcetines.png"],
+    "code": "stu5678",
+    "stock": 30,
+    "category": "calcetines"
+  },
+  {
+    "title": "Blusa Floral",
+    "description": "Blusa de tela ligera con estampado floral",
+    "price": 30,
+    "status": true,
+    "thumbnails": ["blusa.png"],
+    "code": "vwx9012",
+    "stock": 10,
+    "category": "blusas"
+  },
+
+  {
+    "title": "Abrigo de Lana",
+    "description": "Abrigo elegante de lana para el invierno",
+    "price": 80,
+    "status": true,
+    "thumbnails": ["abrigo.png"],
+    "code": "yza3456",
+    "stock": 7,
+    "category": "abrigos"
+  },
+
+  {
+    "title": "Pantalones Cortos Deportivos",
+    "description": "Pantalones cortos ideales para actividades deportivas",
+    "price": 18,
+    "status": true,
+    "thumbnails": ["shorts.png"],
+    "code": "bcd7890",
+    "stock": 18,
+    "category": "pantalones"
+  }
+]

@@ -1,0 +1,20 @@
+<div>
+  <h1>
+
+    Hola {{name}}!
+    <br>
+    Bienvenido al carrito id: {{ cart._id }}!
+  </h1>
+
+  <div>
+    {{#each cart.products }}
+      <div>
+        <p>
+         # {{this.product.title}} - $ {{ this.product.price }} X {{ this.quantity}}
+        </p>
+      </div>
+    {{/each}}
+
+  </div>
+
+</div>
