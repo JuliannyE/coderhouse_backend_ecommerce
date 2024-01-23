@@ -10,7 +10,9 @@
     {{#each products }}
       <div>
         <p>
-         # {{this.title}} - $ {{ this.price }} - <button onclick="agregarCarrito('{{ this._id }}')" data-propiedad="{{this._id}}" >Agregar al carrito</button>
+         # <a href="/products/{{{this._id}}}">
+{{this.title}}
+         </a>  - $ {{ this.price }} - <button onclick="agregarCarrito('{{ this._id }}')" data-propiedad="{{this._id}}" >Agregar al carrito</button>
         </p>
       </div>
     {{/each}}
@@ -18,9 +20,9 @@
 
   </div>
     <div>paginas totales: {{totalPages}} - pagina actual: {{page}}</div>
-    <div> <button> pagina siguiente: {{nextLink }}</button></div>
-
-
+    
+    <div> <button onclick="nextPage('{{{prevLink}}}')"> pagina anterior</button></div>
+    <div> <button onclick="nextPage('{{{nextLink}}}')"> pagina siguiente</button></div>
 </div>
 
 <script>
@@ -28,5 +30,15 @@
   const agregarCarrito = async (pid) => {
     console.log("falta agregarCarrito pid: ", pid)
   }
+
+  const nextPage = async (nextLink) => {
+   const url = nextLink.replace("/api", '')
+   window.location.href = url;
+
+
+
+
+  }
+
 
 </script>

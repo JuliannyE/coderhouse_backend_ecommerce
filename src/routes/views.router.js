@@ -36,7 +36,7 @@ router.get("/carts/:cid", async (req, res) => {
     .lean();
 
   if (!carrito) {
-    throw `Carrito con id ${cid} no existe`;
+    return res.status(404).send("cart not exist")
   }
 
   res.render("cart", {
@@ -44,6 +44,21 @@ router.get("/carts/:cid", async (req, res) => {
     name: "Julianny",
   });
 });
+
+router.get("/products/:id", async (req,res) => {
+  const { id } = req.params;
+
+  const product = await ProductModel.findById(id).lean()
+
+  if (!product) {
+    return res.status(404).send("product not exist")
+  }
+
+  res.render("productById", {
+    product,
+    name: "julianny"
+  })
+} )
 
 router.get("/products", async (req, res) => {
   let testUser = {

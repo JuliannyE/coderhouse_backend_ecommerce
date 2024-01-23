@@ -1,0 +1,59 @@
+<div>
+  <h1>
+    Descripcion del producto
+  </h1>
+  <div>
+
+    <p>id : {{product._id}}</p>
+
+    <p>title : {{product.title}}</p>
+    <p>description : {{product.description}}</p>
+    <p>price : {{product.price}}</p>
+    <p>status : {{product.status}}</p>
+    <p>thumbnails : {{product.thumbnails}}</p>
+    <p>code : {{product.code}}</p>
+    <p>stock : {{product.stock}}</p>
+    <p>category : {{product.category}}</p>
+  </div>
+
+  <button onclick="addProduct('{{{product._id}}}')">Agregar al carrito</button>
+</div>
+
+<script>
+  const addProduct = async (id) => { 
+    var myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+
+var raw = JSON.stringify({
+  "products": [
+    {
+      "product": id,
+      "quantity": 1
+    }
+  ]
+});
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+const data = await fetch("/api/carts", requestOptions)
+if (!data.ok) {
+    const error = await data.text()
+    return alert(error)
+} 
+
+const resp = await data.json()
+
+
+alert("Producto agregado")
+
+window.location.href = "/carts/" + resp.payload._id
+    
+
+
+}
+</script>

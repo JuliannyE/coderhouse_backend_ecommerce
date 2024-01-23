@@ -1,5 +1,8 @@
 const { Router } = require("express");
+const mongoose = require("mongoose");
+
 const CartModel = require("../dao/models/carts.model");
+const ProductModel = require("../dao/models/products.model");
 
 const router = Router();
 
@@ -7,9 +10,9 @@ router.post("/", async (req, res) => {
   const { products } = req.body;
 
   try {
-    const newCart = new CartModel({
-      products,
-    });
+    const newCart = new CartModel();
+
+    newCart.products = products;
 
     await newCart.save();
 
@@ -19,14 +22,14 @@ router.post("/", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.json({ error });
+    res.status(400).send("error: revise los logs del server");
   }
 });
 
 router.get("/:cid", async (req, res) => {
   const { cid } = req.params;
   try {
-    const carrito = await CartModel.findById(cid).populate('products.product')
+    const carrito = await CartModel.findById(cid).populate("products.product");
 
     if (!carrito) {
       throw `Carrito con id ${cid} no existe`;
