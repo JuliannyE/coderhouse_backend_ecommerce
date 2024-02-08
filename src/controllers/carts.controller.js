@@ -1,13 +1,12 @@
-const factory = require("../dao/factory");
-
+const { CartsService } = require('../repositories')
 class CartController {
 
   async createCart(req, res) {
     const { products } = req.body;
 
     try {
-      const cartsService = await factory.createCartInstance();
-      const newCart = await cartsService.create(products);
+      const cartsService = await CartsService()
+      const newCart = await cartsService.createCart(products);
 
       res.json({
         result: "success",
@@ -22,12 +21,14 @@ class CartController {
   async getCartById(req, res) {
     const { cid } = req.params;
     try {
-      const cartsService = await factory.createCartInstance();
-      const carrito = await cartsService.getById(cid);
+      const cartsService = await CartsService()
+      const carrito = await cartsService.getCartById(cid)
 
       if (!carrito) {
-        throw `Carrito con id ${cid} no existe`;
-      }
+        return res.status(404).json({
+          result: "Not found"
+        })
+      };
 
       res.json({
         result: "success",
@@ -44,15 +45,16 @@ class CartController {
   
     try {
       const { cid } = req.params;
-      const cartsService = await factory.createCartInstance();
-      const carrito = await cartsService.getById(cid);
+      const cartsService = await CartsService()
+      const carrito = await cartsService.getCartById(cid)
+
       if (!carrito) {
         return res.status(404).json({
           result: "Not found"
         })
       };
 
-      const newCart = await cartsService.updateProducts(carrito, [])
+      const newCart = await cartsService.updateCartProducts(carrito, [])
       res.json({
         result: "success",
         payload: newCart,
@@ -68,9 +70,9 @@ class CartController {
   
     try {
       const { cid, pid } = req.params;
-      const cartsService = await factory.createCartInstance();
+      const cartsService = await CartsService()
 
-      const carrito = await cartsService.getById(cid)
+      const carrito = await cartsService.getCartById(cid)
       if (!carrito) {
         return res.status(404).json({
           result: "Not found"
@@ -78,7 +80,7 @@ class CartController {
       };
   
       const products = carrito.products.filter((p) => p.product != pid);
-      const newCart = await cartsService.updateProducts(carrito, products)
+      const newCart = await cartsService.updateCartProducts(carrito, products)
 
       res.json({
         result: "success",
@@ -93,9 +95,9 @@ class CartController {
   async insertProduct (req, res) {
     try {
       const { cid, pid } = req.params;
-      const cartsService = await factory.createCartInstance();
+      const cartsService = await CartsService()
 
-      const carrito = await cartsService.getById(cid)
+      const carrito = await cartsService.getCartById(cid)
       if (!carrito) {
         return res.status(404).json({
           result: "Not found"
@@ -116,7 +118,7 @@ class CartController {
         });
       }
       
-      const newCart = await cartsService.updateProducts(carrito, carrito.products)
+      const newCart = await cartsService.updateCartProducts(carrito, carrito.products)
 
       res.json({
         result: "success",
@@ -135,16 +137,16 @@ class CartController {
       const { cid } = req.params;
       const { products } = req.body;
 
-      const cartsService = await factory.createCartInstance();
+      const cartsService = await CartsService()
 
-      const carrito = await cartsService.getById(cid)
+      const carrito = await cartsService.getCartById(cid)
       if (!carrito) {
         return res.status(404).json({
           result: "Not found"
         })
       };
 
-      const newCart = await cartsService.updateProducts(carrito, products)
+      const newCart = await cartsService.updateCartProducts(carrito, products)
       res.json({
         result: "success",
         payload: newCart,
@@ -167,9 +169,9 @@ class CartController {
           result: "Bad quantity"
         })
       }
-      const cartsService = await factory.createCartInstance();
+      const cartsService = await CartsService()
 
-      const carrito = await cartsService.getById(cid)
+      const carrito = await cartsService.getCartById(cid)
       if (!carrito) {
         return res.status(404).json({
           result: "Not found"
@@ -182,7 +184,7 @@ class CartController {
         }
       });
   
-      const newCart = await cartsService.updateProducts(carrito, carrito.products)
+      const newCart = await cartsService.updateCartProducts(carrito, carrito.products)
 
       res.json({
         result: "success",
