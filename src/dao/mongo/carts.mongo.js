@@ -16,6 +16,11 @@ class Carts {
 
     return carrito;
   }
+  async updateProducts(cart , products) {
+    cart.products = products;
+    await cart.save();
+    return cart;
+  }
 }
 
 module.exports = Carts;
