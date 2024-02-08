@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-
-const MONGO_URL = process.env.MONGO_URL
+const { MONGO_URL } = require('../config/config');
 
 const db = async () => {
 
@@ -22,6 +21,5 @@ const db = async () => {
         });
 
 }
-
 
 module.exports = db;

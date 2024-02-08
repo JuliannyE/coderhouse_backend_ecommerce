@@ -1,49 +1,13 @@
 const { Router } = require("express");
-const mongoose = require("mongoose");
+const CartController = require("../controllers/carts.controller");
 
 const CartModel = require("../dao/models/carts.model");
-const ProductModel = require("../dao/models/products.model");
 
 const router = Router();
 
-router.post("/", async (req, res) => {
-  const { products } = req.body;
+router.post("/", CartController.createCart);
 
-  try {
-    const newCart = new CartModel();
-
-    newCart.products = products;
-
-    await newCart.save();
-
-    res.json({
-      result: "success",
-      payload: newCart,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400).send("error: revise los logs del server");
-  }
-});
-
-router.get("/:cid", async (req, res) => {
-  const { cid } = req.params;
-  try {
-    const carrito = await CartModel.findById(cid).populate("products.product");
-
-    if (!carrito) {
-      throw `Carrito con id ${cid} no existe`;
-    }
-
-    res.json({
-      result: "success",
-      payload: carrito,
-    });
-  } catch (error) {
-    console.log(error);
-    res.json({ error });
-  }
-});
+router.get("/:cid", CartController.getCartById);
 
 router.post("/:cid/products/:pid", async (req, res) => {
   try {
