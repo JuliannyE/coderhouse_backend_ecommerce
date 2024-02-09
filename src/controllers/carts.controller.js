@@ -197,4 +197,4 @@ class CartController {
   }
 };
 
-module.exports = CartController;
+module.exports = new CartController();
