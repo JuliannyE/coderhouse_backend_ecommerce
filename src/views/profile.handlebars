@@ -1,0 +1,41 @@
+<div>
+  <section style="display: flex; justify-content: space-between ;">
+
+    <h1>
+
+      Hola
+      {{user.name}} {{user.lastName}} ROL: {{user.role}}!
+      <br />
+      Bienvenido a tu perfil!
+    </h1>
+
+    <form action="/api/sessions/logout" method="get">
+      <button type="submit">
+        Salir
+      </button>
+    </form>
+  </section>
+  <section>
+    <h3>Aqui estan tus datos</h3>
+    <table border="1">
+      <thead>
+        <th>id</th>
+        <th>name</th>
+        <th>lastName</th>
+        <th>email</th>
+        <th>age</th>
+        <th>role</th>
+      </thead>
+      <tbody >
+        <tr>
+          <td>{{user._id}}</td>
+          <td>{{user.name}}</td>
+          <td>{{user.lastName}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.age}}</td>
+          <td>{{user.role}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>

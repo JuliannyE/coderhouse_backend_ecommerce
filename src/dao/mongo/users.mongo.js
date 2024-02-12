@@ -7,20 +7,8 @@ class Users {
     this.model = UserModel
   }
 
-  async create({
-    name,
-    lastName,
-    age,
-    email,
-    password
-  }) {
-    const newUser = new this.model({
-      name,
-      lastName,
-      age,
-      email,
-      password
-    });
+  async create(user) {
+    const newUser = new this.model(user);
     await newUser.save();
     return newUser;
   }

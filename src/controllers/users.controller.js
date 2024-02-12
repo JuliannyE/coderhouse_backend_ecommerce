@@ -20,13 +20,15 @@ class UserController {
         });
       }
 
-      await userService.createUser({
+      const userData = {
         email,
         password,
         name,
         age,
         lastName,
-      });
+      };
+
+      await userService.createUser(userData);
 
       res.redirect("/");
     } catch (error) {
@@ -44,6 +46,17 @@ class UserController {
         return res.status(400).send({
           errorMsg: "Formulario incompleto",
         });
+      }
+
+      if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
+        req.session.user = {
+          name: "Admin",
+          lastName: "Coder",
+          email,
+          role: "admin",
+        };
+
+        return res.redirect("/");
       }
 
       const userService = await UserService();

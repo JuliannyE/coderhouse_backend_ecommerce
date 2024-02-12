@@ -32,7 +32,7 @@ router.get("/register", async (req, res) => {
 
 // websockets...
 
-router.get("/realtimeproducts",authMiddleware, async (req, res) => {
+router.get("/realtimeproducts", authMiddleware, async (req, res) => {
   res.render("realtimeProducts", {
     name: "Julianny ",
   });
@@ -63,7 +63,7 @@ router.get("/carts/:cid", authMiddleware, async (req, res) => {
   });
 });
 
-router.get("/products/:id",authMiddleware, async (req, res) => {
+router.get("/products/:id", authMiddleware, async (req, res) => {
   const { id } = req.params;
 
   const product = await ProductModel.findById(id).lean();
@@ -79,10 +79,7 @@ router.get("/products/:id",authMiddleware, async (req, res) => {
 });
 
 router.get("/products", authMiddleware, async (req, res) => {
-  const {user} = req.session
-  let testUser = {
-    name: user.name,
-  };
+  const { user } = req.session;
 
   const { limit = 5, page = 1 } = req.query;
 
@@ -105,7 +102,7 @@ router.get("/products", authMiddleware, async (req, res) => {
     : null;
 
   res.render("product", {
-    name: testUser.name,
+    user,
     products: productos.docs,
     totalPages: productos.totalPages,
     prevPage: productos.prevPage,
@@ -116,6 +113,12 @@ router.get("/products", authMiddleware, async (req, res) => {
     prevLink: productos.prevLink,
     nextLink: productos.nextLink,
   });
+});
+
+router.get("/profile", authMiddleware, async (req, res) => {
+  const { user } = req.session;
+
+  res.render("profile", { user });
 });
 
 module.exports = router;

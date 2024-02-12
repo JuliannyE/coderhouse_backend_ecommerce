@@ -11,9 +11,10 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  admin: {
-    type: Boolean,
-    default: false
+  role: {
+    type: String,
+    enum: ["admin", "user"],
+    default: "user"
   },
   email: {
     type: String,

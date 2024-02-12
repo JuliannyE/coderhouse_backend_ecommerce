@@ -1,7 +1,20 @@
 <div>
-  <h1>
-    Descripcion del producto
-  </h1>
+  <section style="display: flex; justify-content: space-between ;">
+
+    <h1>
+
+      Hola
+      {{user.name}} {{user.lastName}} ROL: {{user.role}}!
+      <br />
+      Descripción del producto!
+    </h1>
+
+    <form action="/api/sessions/logout" method="get">
+      <button type="submit">
+        Salir
+      </button>
+    </form>
+  </section>
   <div>
 
     <p>id : {{product._id}}</p>
