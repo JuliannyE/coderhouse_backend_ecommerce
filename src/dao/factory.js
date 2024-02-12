@@ -1,16 +1,17 @@
-const mongoose = require("mongoose");
 const config = require("../config/config");
+const db = require("./db");
 
 async function loadPersistenceModule() {
   switch (config.persistence) {
     case "MONGO":
-      const connection = await mongoose.connect(process.env.MONGO_URL);
+      await db()
       const { default: CartMongo } = await import("./mongo/carts.mongo.js");
+      const { default: UserMongo } = await import("./mongo/users.mongo.js");
       const { default: ProductMongo } = await import(
         "./mongo/products.mongo.js"
       );
 
-      return { CartMongo, ProductMongo };
+      return { CartMongo, ProductMongo, UserMongo};
     default:
       throw new Error(
         `Persistence type '${config.persistence}' not supported.`
@@ -26,5 +27,9 @@ module.exports = {
   async createProductInstance() {
     const { ProductMongo } = await loadPersistenceModule();
     return new ProductMongo();
+  },
+  async createUserInstance() {
+    const { UserMongo } = await loadPersistenceModule();
+    return new UserMongo();
   },
 };

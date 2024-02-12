@@ -1,0 +1,33 @@
+<div>
+  <h1>
+    Hola ingresa aqui 
+  </h1>
+  <section>
+    <div>
+      {{ msg }}
+    </div>
+    <form action="/api/sessions/login" method="post">
+
+      <div>
+        <label for="correo">Email</label>
+        <input type="email" placeholder="correo" name="email" required />
+      </div>
+
+      <div>
+        <label for="password">Contraseña</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          minlength="6"
+          required
+        />
+      </div>
+
+      <button type="submit">Validar</button>
+    </form>
+  </section>
+    <div>
+    <a href="/register">Crear una cuenta</a>
+  </div>
+</div>

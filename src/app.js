@@ -2,14 +2,20 @@ require('./config/config')
 const express = require("express")
 const handlebars = require("express-handlebars")
 const { Server } = require("socket.io")
+const cookieParser = require("cookie-parser")
+const session = require("express-session")
+const MongoStore = require("connect-mongo")
+
 
 const productsRouter = require("./routes/products.router")
 const cartsRouter = require("./routes/carts.router")
 const viewsRouter = require("./routes/views.router")
+const sessionsRouter = require("./routes/sessions.router")
 
 const db = require("./dao/db")
 const ProductModel = require("./dao/models/products.model")
 const MessageModel = require("./dao/models/messages.model")
+const { MONGO_URL, COOKIE_SECRET } = require('./config/config')
 
 const app = express()
 const PUERTO = 8080
@@ -47,6 +53,20 @@ app.set('io', io)
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(cookieParser())
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: MONGO_URL,
+        mongoOptions:{
+            useNewUrlParser: true,
+        useUnifiedTopology: true,
+        },
+        ttl: 1 * 3600 // 1 hora
+    }),
+    secret: COOKIE_SECRET,
+    resave: false,
+    saveUninitialized: false
+}))
 
 // view engine
 app.engine("handlebars", handlebars.engine())
@@ -58,5 +78,6 @@ app.use(express.static(__dirname + '/public'))
 app.use("/", viewsRouter)
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)
+app.use("/api/sessions", sessionsRouter)
 
 

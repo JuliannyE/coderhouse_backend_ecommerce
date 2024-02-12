@@ -1,34 +1,52 @@
 const { Router } = require("express");
 const CartModel = require("../dao/models/carts.model");
 const ProductModel = require("../dao/models/products.model");
+const authMiddleware = require("../middlewares/auth.middleware");
 
 const router = Router();
 
+// sessions...
 router.get("/", async (req, res) => {
-  let testUser = {
-    name: "julianny",
-  };
+  const { msg } = req.query;
 
-  const products = await ProductModel.find().lean();
-  res.render("home", {
-    name: testUser.name,
-    products,
+  if (req.session?.user) {
+    return res.redirect("/products");
+  }
+
+  res.render("login", {
+    msg,
   });
 });
 
-router.get("/realtimeproducts", async (req, res) => {
-  res.render("realtimeProductss", {
+router.get("/register", async (req, res) => {
+  const { msg } = req.query;
+
+  if (req.session?.user) {
+    return res.redirect("/");
+  }
+
+  res.render("register", {
+    msg,
+  });
+});
+
+// websockets...
+
+router.get("/realtimeproducts",authMiddleware, async (req, res) => {
+  res.render("realtimeProducts", {
     name: "Julianny ",
   });
 });
 
-router.get("/chat", async (req, res) => {
+router.get("/chat", authMiddleware, async (req, res) => {
   res.render("chat", {
     name: "Julianny ",
   });
 });
 
-router.get("/carts/:cid", async (req, res) => {
+// products...
+
+router.get("/carts/:cid", authMiddleware, async (req, res) => {
   const { cid } = req.params;
 
   const carrito = await CartModel.findById(cid)
@@ -36,7 +54,7 @@ router.get("/carts/:cid", async (req, res) => {
     .lean();
 
   if (!carrito) {
-    return res.status(404).send("cart not exist")
+    return res.status(404).send("cart not exist");
   }
 
   res.render("cart", {
@@ -45,45 +63,45 @@ router.get("/carts/:cid", async (req, res) => {
   });
 });
 
-router.get("/products/:id", async (req,res) => {
+router.get("/products/:id",authMiddleware, async (req, res) => {
   const { id } = req.params;
 
-  const product = await ProductModel.findById(id).lean()
+  const product = await ProductModel.findById(id).lean();
 
   if (!product) {
-    return res.status(404).send("product not exist")
+    return res.status(404).send("product not exist");
   }
 
   res.render("productById", {
     product,
-    name: "julianny"
-  })
-} )
-
-router.get("/products", async (req, res) => {
-  let testUser = {
     name: "julianny",
+  });
+});
+
+router.get("/products", authMiddleware, async (req, res) => {
+  const {user} = req.session
+  let testUser = {
+    name: user.name,
   };
 
   const { limit = 5, page = 1 } = req.query;
 
-  const productos = await ProductModel.paginate({}, {
-    limit,
-    page,
-    lean: true
-  });
+  const productos = await ProductModel.paginate(
+    {},
+    {
+      limit,
+      page,
+      lean: true,
+    }
+  );
 
   const baseUrl = `${req.protocol}://${req.get("host")}`;
 
   productos.prevLink = productos.hasPrevPage
-    ? `${baseUrl}/api/products?limit=${limit}&page=${
-        parseInt(page) - 1
-      }`
+    ? `${baseUrl}/api/products?limit=${limit}&page=${parseInt(page) - 1}`
     : null;
   productos.nextLink = productos.hasNextPage
-    ? `${baseUrl}/api/products?limit=${limit}&page=${
-        parseInt(page) + 1
-      }`
+    ? `${baseUrl}/api/products?limit=${limit}&page=${parseInt(page) + 1}`
     : null;
 
   res.render("product", {

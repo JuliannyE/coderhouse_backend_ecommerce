@@ -1,10 +1,20 @@
 <div>
-  <h1>
+  <section style="display: flex; justify-content: space-between ;">
 
-    Hola {{name}}!
-    <br>
-    Bienvenido al listado de productos
-  </h1>
+    <h1>
+
+      Hola
+      {{name}}!
+      <br />
+      Bienvenido al listado de productos
+    </h1>
+
+    <form action="/api/sessions/logout" method="get">
+      <button type="submit">
+        Salir
+      </button>
+    </form>
+  </section>
 
   <div>
     {{#each products }}
@@ -34,10 +44,6 @@
   const nextPage = async (nextLink) => {
    const url = nextLink.replace("/api", '')
    window.location.href = url;
-
-
-
-
   }
 
 

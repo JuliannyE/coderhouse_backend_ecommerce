@@ -1,0 +1,48 @@
+<div>
+  <h1>
+    Registro de usuario
+  </h1>
+  <section>
+    <div>
+      {{ msg }}
+    </div>
+    <form action="/api/sessions/register" method="post">
+      <div>
+        <label for="name">Nombre</label>
+        <input type="text" placeholder="name" name="name" required />
+      </div>
+
+      <div>
+        <label for="lastName">Apellido</label>
+        <input type="text" placeholder="lastName" name="lastName" required />
+      </div>
+
+      <div>
+        <label for="correo">Email</label>
+        <input type="email" placeholder="correo" name="email" required />
+      </div>
+
+      <div>
+        <label for="age">Edad</label>
+        <input type="number" placeholder="age" name="age" required />
+      </div>
+
+      <div>
+        <label for="password">Contraseña</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          minlength="6"
+          required
+        />
+      </div>
+
+      <button type="submit">Crear usuario</button>
+    </form>
+  </section>
+  <div>
+    <a href="/">Tengo una cuenta</a>
+  </div>
+
+</div>
