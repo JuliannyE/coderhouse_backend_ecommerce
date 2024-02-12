@@ -69,6 +69,7 @@ class UserController {
         email: user.email,
         lastName: user.lastName,
         age: user.age,
+        role: user.role,
       };
 
       res.redirect("/products");
