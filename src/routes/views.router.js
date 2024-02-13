@@ -18,6 +18,18 @@ router.get("/", async (req, res) => {
   });
 });
 
+router.get("/recuperar", async (req, res) => {
+  const { msg } = req.query;
+
+  if (req.session?.user) {
+    return res.redirect("/products");
+  }
+
+  res.render("recuperar", {
+    msg,
+  });
+});
+
 router.get("/register", async (req, res) => {
   const { msg } = req.query;
 

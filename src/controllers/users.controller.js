@@ -1,4 +1,5 @@
 const { UserService } = require("../repositories");
+const { createHash, isValidPassword } = require("../utils/hashedPassword");
 
 class UserController {
   async createUser(req, res) {
@@ -22,7 +23,7 @@ class UserController {
 
       const userData = {
         email,
-        password,
+        password: createHash(password),
         name,
         age,
         lastName,
@@ -69,7 +70,7 @@ class UserController {
         });
       }
 
-      if (password !== user.password) {
+      if (!isValidPassword(user.password, password)) {
         // return res.redirect("/?msg=Credenciales%20Erroneas")
         return res.status(401).json({
           result: "Credenciales incorrectas",
@@ -110,6 +111,37 @@ class UserController {
       ok: true,
       user,
     });
+  }
+
+  async recoveryUser(req, res) {
+    try {
+      const { email, password } = req.body;
+
+      if (email === "" || password === "") {
+        return res.status(400).send({
+          errorMsg: "Formulario incompleto",
+        });
+      }
+
+      const userService = await UserService();
+      const user = await userService.getUserByEmail(email);
+
+      if (!user) {
+        // return res.redirect("/?msg=Credenciales%20Erroneas")
+        return res.status(401).json({
+          result: "Credenciales incorrectas",
+        });
+      }
+
+      user.password = createHash(password);
+      await userService.updateUser(user._id, user);
+
+      res.redirect("/");
+    } catch (error) {
+      res.status(400).json({
+        error,
+      });
+    }
   }
 }
 

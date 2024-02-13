@@ -2,9 +2,8 @@ const { isValidObjectId } = require("mongoose");
 const UserModel = require("../models/users.model");
 
 class Users {
-
-  constructor(){
-    this.model = UserModel
+  constructor() {
+    this.model = UserModel;
   }
 
   async create(user) {
@@ -14,13 +13,19 @@ class Users {
   }
 
   async get(filter) {
-    const user = await this.model.findOne(filter)
+    const user = await this.model.findOne(filter);
 
     if (!user) {
       return null;
     }
 
     return user;
+  }
+
+  async update(id, data) {
+    const user = await this.model.findByIdAndUpdate(id, data, { new: true });
+
+    return user
   }
 }
 

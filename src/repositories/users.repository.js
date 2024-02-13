@@ -8,7 +8,15 @@ class UserRespository {
   }
 
   async getUserByEmail(email) {
-    return await this.dao.get({email})
+    return await this.dao.get({ email });
+  }
+
+  async updateUser(userId, userUpdated) {
+    return await this.dao.update(userId, userUpdated);
+  }
+
+  async getUserById(userId) {
+    return await this.dao.get({ _id: userId });
   }
 }
 

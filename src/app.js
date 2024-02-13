@@ -5,7 +5,8 @@ const { Server } = require("socket.io")
 const cookieParser = require("cookie-parser")
 const session = require("express-session")
 const MongoStore = require("connect-mongo")
-
+const passport = require("passport");
+const initializePassport = require('./config/passport.config')
 
 const productsRouter = require("./routes/products.router")
 const cartsRouter = require("./routes/carts.router")
@@ -51,6 +52,7 @@ io.on("connection", async (socket) => {
 })
 app.set('io', io)
 
+// middleware
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cookieParser())
@@ -67,6 +69,9 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }))
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 // view engine
 app.engine("handlebars", handlebars.engine())

@@ -1,12 +1,12 @@
 <div>
   <h1>
-    Hola ingresa aqui 
+    Hola Recupera tu Contraseña aqui
   </h1>
   <section>
     <div>
       {{ msg }}
     </div>
-    <form action="/api/sessions/login" method="post">
+    <form action="/api/sessions/recovery" method="post">
 
       <div>
         <label for="correo">Email</label>
@@ -14,7 +14,7 @@
       </div>
 
       <div>
-        <label for="password">Contraseña</label>
+        <label for="password">Nueva Contraseña</label>
         <input
           type="password"
           name="password"
@@ -24,13 +24,10 @@
         />
       </div>
 
-      <button type="submit">Validar</button>
+      <button type="submit">Cambiar Contraseña</button>
     </form>
   </section>
     <div>
-    <a href="/register">Crear una cuenta</a>
-  </div>
-    <div>
-    <a href="/recuperar">Recuperar Contraseña</a>
+    <a href="/">Volver al login</a>
   </div>
 </div>
