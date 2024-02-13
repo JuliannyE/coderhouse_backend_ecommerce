@@ -3,6 +3,7 @@ const authMiddleware = require("../middlewares/auth.middleware");
 const userController = require("../controllers/users.controller");
 const passport = require("passport");
 const { generateToken } = require("../utils/jwt");
+const passportCall = require("../middlewares/passportCall.middleware");
 
 const router = Router();
 
@@ -67,6 +68,13 @@ router.get(
     res.send(req.user);
   }
 );
+// router.get(
+//   "/current",
+//   passportCall('jwt', {session: false}),
+//   (req, res) => {
+//     res.send("req.user");
+//   }
+// );
 
 router.post("/recovery", userController.recoveryUser);
 

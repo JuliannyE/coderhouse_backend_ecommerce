@@ -3,7 +3,7 @@ const local = require("passport-local");
 const jwt = require("passport-jwt")
 const { UserService } = require("../repositories");
 const { createHash, isValidPassword } = require("../utils/hashedPassword");
-const { COOKIE_SECRET, JWT_SECRET } = require("./config");
+const { JWT_SECRET } = require("./config");
 
 const localStrategy = local.Strategy;
 const JWTStrategy = jwt.Strategy;
