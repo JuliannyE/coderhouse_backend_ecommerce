@@ -4,6 +4,7 @@ const userController = require("../controllers/users.controller");
 const passport = require("passport");
 const { generateToken } = require("../utils/jwt");
 const passportCall = require("../middlewares/passportCall.middleware");
+const authorizationMiddleware = require("../middlewares/authorization.middleware");
 
 const router = Router();
 
@@ -16,6 +17,7 @@ router.post(
       lastName: req.user.lastName,
       age: req.user.age,
       email: req.user.email,
+      role: req.user.role,
     };
 
     const accessToken = generateToken(session);
@@ -45,6 +47,7 @@ router.post(
       lastName: req.user.lastName,
       age: req.user.age,
       email: req.user.email,
+      role: req.user.role,
     };
 
     const accessToken = generateToken(session);
@@ -64,17 +67,14 @@ router.get("/logout", userController.logout);
 router.get(
   "/current",
   passport.authenticate("jwt", { session: false }),
+  authorizationMiddleware("user"),
   (req, res) => {
     res.send(req.user);
   }
 );
-// router.get(
-//   "/current",
-//   passportCall('jwt', {session: false}),
-//   (req, res) => {
-//     res.send("req.user");
-//   }
-// );
+// router.get("/current", passportCall("jwt"), (req, res) => {
+//   res.send("req.user");
+// });
 
 router.post("/recovery", userController.recoveryUser);
 
