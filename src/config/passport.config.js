@@ -1,9 +1,26 @@
 const passport = require("passport");
 const local = require("passport-local");
+const jwt = require("passport-jwt")
 const { UserService } = require("../repositories");
 const { createHash, isValidPassword } = require("../utils/hashedPassword");
+const { COOKIE_SECRET, JWT_SECRET } = require("./config");
 
 const localStrategy = local.Strategy;
+const JWTStrategy = jwt.Strategy;
+
+const extractJWT = jwt.ExtractJwt;
+
+const cookieExtractor = req => {
+  let token = null
+
+  if ( req && req.session) {
+    console.log({coo: req.session})
+    
+    token = req.session.user
+  }
+
+  return token
+}
 
 const initializePassport = () => {
   passport.use(
@@ -74,6 +91,20 @@ const initializePassport = () => {
       }
     )
   );
+
+  passport.use('jwt' ,
+  new JWTStrategy({
+    jwtFromRequest: extractJWT.fromExtractors([cookieExtractor]),
+    secretOrKey: JWT_SECRET
+  }, async(jwtPayload, done) => {
+    try {
+      return done(null, jwtPayload.user)
+    } catch (error) {
+      return done(error)
+    }
+
+  })
+  )
 };
 
 module.exports = initializePassport;

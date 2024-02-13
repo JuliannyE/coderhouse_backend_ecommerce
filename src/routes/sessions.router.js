@@ -10,12 +10,17 @@ router.post(
   "/register",
   passport.authenticate("register", { failureRedirect: "/fail_register" }),
   async (req, res) => {
-    const accessToken = generateToken(req.user)
-    
-    res.send({
-        result: "Success",
-        accessToken
-    })
+    const session = {
+      name: req.user.name,
+      lastName: req.user.lastName,
+      age: req.user.age,
+      email: req.user.email,
+    };
+
+    const accessToken = generateToken(session);
+    req.session.user = accessToken;
+
+    res.redirect("/products");
   }
 );
 
@@ -34,30 +39,34 @@ router.post(
       });
     }
 
-    req.session.user = {
+    const session = {
       name: req.user.name,
       lastName: req.user.lastName,
       age: req.user.age,
       email: req.user.email,
     };
 
-    // const accessToken = generateToken(req.user)
-    
-    // // res.send({
-    // //     result: "Success",
-    // //     accessToken
-    // // })
+    const accessToken = generateToken(session);
+    req.session.user = accessToken;
+
     res.redirect("/products");
   }
 );
 
 router.get("fail_login", (req, res) => {
-    res.send({ error: "failed login" });
-  });
+  res.send({ error: "failed login" });
+});
 
 router.get("/logout", userController.logout);
 
-router.get("/current", authMiddleware, userController.getCurrentUser);
+// router.get("/current", authMiddleware, userController.getCurrentUser);
+router.get(
+  "/current",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.send(req.user);
+  }
+);
 
 router.post("/recovery", userController.recoveryUser);
 
