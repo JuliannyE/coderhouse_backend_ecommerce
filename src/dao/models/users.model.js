@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { POLICIES } = require("../../config/config");
 
 const collectionName = "Users";
 
@@ -13,7 +14,7 @@ const schema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["admin", "user"],
+    enum: Object.keys(POLICIES).map( p => POLICIES[p]),
     default: "user"
   },
   email: {

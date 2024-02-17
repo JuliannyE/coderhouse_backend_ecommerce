@@ -1,26 +1,26 @@
 const passport = require("passport");
 const local = require("passport-local");
-const jwt = require("passport-jwt")
+const jwt = require("passport-jwt");
 const { UserService } = require("../repositories");
 const { createHash, isValidPassword } = require("../utils/hashedPassword");
-const { JWT_SECRET } = require("./config");
+const { JWT_SECRET, POLICIES } = require("./config");
 
 const localStrategy = local.Strategy;
 const JWTStrategy = jwt.Strategy;
 
 const extractJWT = jwt.ExtractJwt;
 
-const cookieExtractor = req => {
-  let token = null
+const cookieExtractor = (req) => {
+  let token = null;
 
-  if ( req && req.session) {
-    console.log({coo: req.session})
-    
-    token = req.session.user
+  if (req && req.session) {
+    console.log({ coo: req.session });
+
+    token = req.session.user;
   }
 
-  return token
-}
+  return token;
+};
 
 const initializePassport = () => {
   passport.use(
@@ -29,7 +29,7 @@ const initializePassport = () => {
       { passReqToCallback: true, usernameField: "email" },
       async (req, username, password, done) => {
         try {
-          const { name, age, lastName } = req.body;
+          const { name, age, lastName, role } = req.body;
 
           const userService = await UserService();
           const userExist = await userService.getUserByEmail(username);
@@ -44,6 +44,7 @@ const initializePassport = () => {
             email: username,
             age,
             password: createHash(password),
+            role: role ? role.toUpperCase : POLICIES.USER,
           };
 
           const user = await userService.createUser(newUser);
@@ -92,19 +93,22 @@ const initializePassport = () => {
     )
   );
 
-  passport.use('jwt' ,
-  new JWTStrategy({
-    jwtFromRequest: extractJWT.fromExtractors([cookieExtractor]),
-    secretOrKey: JWT_SECRET
-  }, async(jwtPayload, done) => {
-    try {
-      return done(null, jwtPayload.user)
-    } catch (error) {
-      return done(error)
-    }
-
-  })
-  )
+  passport.use(
+    "jwt",
+    new JWTStrategy(
+      {
+        jwtFromRequest: extractJWT.fromExtractors([cookieExtractor]),
+        secretOrKey: JWT_SECRET,
+      },
+      async (jwtPayload, done) => {
+        try {
+          return done(null, jwtPayload.user);
+        } catch (error) {
+          return done(error);
+        }
+      }
+    )
+  );
 };
 
 module.exports = initializePassport;

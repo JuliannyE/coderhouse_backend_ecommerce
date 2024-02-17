@@ -6,17 +6,23 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
+
+const { MONGO_URL, COOKIE_SECRET } = require("./config/config");
 const initializePassport = require("./config/passport.config");
 
 const productsRouter = require("./routes/products.router");
 const cartsRouter = require("./routes/carts.router");
 const viewsRouter = require("./routes/views.router");
-const sessionsRouter = require("./routes/sessions.router");
+// const sessionsRouter = require("./routes/sessions.router");
+
+// v2
+const UsersRouter = require("./routes/v2/user.router");
+const SessionsRouter = require("./routes/v2/sessions.router");
 
 const db = require("./dao/db");
 const ProductModel = require("./dao/models/products.model");
 const MessageModel = require("./dao/models/messages.model");
-const { MONGO_URL, COOKIE_SECRET } = require("./config/config");
+
 
 const app = express();
 const PUERTO = 8080;
@@ -86,4 +92,10 @@ app.use(express.static(__dirname + "/public"));
 app.use("/", viewsRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
-app.use("/api/sessions", sessionsRouter);
+// app.use("/api/sessions", sessionsRouter);
+
+// v2
+const usersRouter = new UsersRouter()
+const sessionsRouter = new SessionsRouter()
+app.use("/api/users", usersRouter.getRouter())
+app.use("/api/sessions", sessionsRouter.getRouter());

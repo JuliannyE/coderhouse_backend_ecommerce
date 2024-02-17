@@ -27,7 +27,7 @@ router.post(
   }
 );
 
-router.get("fail_register", (req, res) => {
+router.get("/fail_register", (req, res) => {
   res.send({ error: "failed register" });
 });
 
@@ -57,7 +57,7 @@ router.post(
   }
 );
 
-router.get("fail_login", (req, res) => {
+router.get("/fail_login", (req, res) => {
   res.send({ error: "failed login" });
 });
 

@@ -6,6 +6,8 @@ const generateToken = (user) => {
   return token;
 };
 
+const verifyToken = token => jwt.verify(token, JWT_SECRET)
+
 const authTokenMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
@@ -30,6 +32,7 @@ const authTokenMiddleware = (req, res, next) => {
 };
 
 module.exports = {
-    generateToken,
-    authTokenMiddleware
-}
+  generateToken,
+  authTokenMiddleware,
+  verifyToken,
+};
